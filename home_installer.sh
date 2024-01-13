@@ -1,27 +1,47 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0]; then
-  echo "This script requires root privileges. Please run it as root or with sudo."
-  exit 1
-else
-  echo "Running installer script"
-fi
+# The function renames the file from `target` to `target.backup` 
+# only if the file exists and if it's not a symlink
+backup() {
+  target=$1
+  if [ -e "$target" ]; then
+    if [ ! -L "$target" ]; then
+      mv "$target" "$target.backup"
+      echo "$target : backup $target to $target.backup"
+    fi
+  fi
+}
 
+symlink() {
+  file=$1
+  link=$2
+  if [ ! -e "$link" ]; then
+    echo "Create symlink from $link to $file"
+    ln -s $file $link
+  fi
+}
 
-## Copy dotfiles
-files=$(find . -name 'dot_*')
+## Find dotfiles
+files=$(find . -name 'dot_*' | sed 's/^\.\///')
+echo "Files found :"
+echo "$files"
 
-for file in $files
-do
-  new_filename=$(echo "$file" | sed 's/dot_/.\/./')
-  cp "$file" "../$new_filename"
+echo "Creating symlinks..."
+for name in $files; do
+  if [ ! -d "$name" ]; then
+    new_name=$(echo "$name" | sed 's/dot_//')
+    target="$HOME/.$new_name"
+    backup $target
+    symlink $PWD/$name $target
+  fi
 done
+echo "Symlinks created"
 
-## Install bin through arkade
-
-curl -sLS https://get.arkade.dev | sudo sh
-
-arkade get fzf helm kind kubectl kubectx kubens krew k9s 
-kubectl krew install deprecations krew node-shell rbac-tool resource-capacity
-
-./autocomplete.sh
+echo "Running arkade.sh"
+./scripts/arkade.sh
+echo "Running autocomplete.sh"
+sudo ./scripts/autocomplete.sh
+echo "Running apt.sh"
+sudo ./scripts/apt.sh
+echo "Running other.sh"
+sudo ./scripts/apt.sh

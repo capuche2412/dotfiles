@@ -6,6 +6,7 @@ It is tested on Debian-based distribution with Bash.
 ## List of binaries and softwares
 
 - jump : https://github.com/gsamokovarov/jump
+- mcfly : https://github.com/cantino/mcfly
 - VSCodium : https://vscodium.com/
 - OpenLens : https://github.com/MuhammedKalkan/OpenLens
 
