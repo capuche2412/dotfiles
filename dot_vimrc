@@ -1,0 +1,246 @@
+"--------------------------------------------------------------------------
+"               
+"               ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
+"               ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
+"               ██║   ██║██║██╔████╔██║██████╔╝██║     
+"               ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║     
+"                ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
+"                 ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
+"               
+"--------------------------------------------------------------------------
+"  Version : 0.1.0
+"  License : MIT
+"  Author  : Arthur Le Roux
+"  URL     : https://github.com/capuche2412
+"
+" GENERAL ----------------------------------------------------------------- {{{
+
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
+
+" Enable type file detection. Vim will be able to try to detect the type of file in use.
+filetype on
+
+" Enable plugins and load plugin for the detected file type.
+filetype plugin on
+
+" Load an indent file for the detected file type.
+filetype indent on
+
+" Turn syntax highlighting on.
+syntax on
+
+" Add numbers to each line on the left-hand side.
+set number
+
+" Set shift width to 2 spaces.
+set shiftwidth=2
+
+" Set tab width to 2 columns.
+set tabstop=2
+
+" Use space characters instead of tabs.
+set expandtab
+
+" Do not save backup files.
+set nobackup
+
+" Do not let cursor scroll below or above N number of lines when scrolling.
+set scrolloff=8
+
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+set nowrap
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Override the ignorecase option if searching for capital letters.
+" This will allow you to search specifically for capital letters.
+set smartcase
+
+" Show partial command you type in the last line of the screen.
+set showcmd
+
+" Show the mode you are on the last line.
+set showmode
+
+" Show matching words during a search.
+set showmatch
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" timeoutlen apply to mappings
+" ttimeoutlen apply to key codes
+set timeoutlen=1000 ttimeoutlen=0
+
+" Set the commands to save in history default number is 20.
+set history=1000" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" There are certain files that we would never want to edit with Vim.
+" Wildmenu will ignore files with these extensions.
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+
+" }}}
+
+
+" PLUGINS ---------------------------------------------------------------- {{{
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+
+  Plug 'dense-analysis/ale'
+
+  Plug 'preservim/nerdtree'
+
+  Plug 'joshdick/onedark.vim'
+
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+
+  Plug 'kien/ctrlp.vim'
+
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+call plug#end()
+
+" OneDark
+colorscheme onedark
+let g:airline_theme='onedark'
+let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
+let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
+" ctrl-p
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+    \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
+
+" Use the nearest .git|.svn|.hg|.bzr directory as the cwd
+let g:ctrlp_working_path_mode = 'r'
+nmap <leader>p :CtrlP<cr>  " enter file search mode
+
+" }}}
+
+
+" MAPPINGS --------------------------------------------------------------- {{{
+
+" Set the leader key.
+let mapleader = "\<space>"
+
+
+" Press ,, to jump back to the last cursor position.
+nnoremap <leader><space> ``
+
+" Press p to print the current file to the default printer from a Linux operating system.
+" View available printers:   lpstat -v
+" Set default printer:       lpoptions -d <printer_name>
+" <silent> means do not display output.
+nnoremap <silent> <leader>p :%w !lp<CR>
+
+" Type jk and kj to exit insert mode quickly.
+inoremap jk <Esc>
+inoremap kj <Esc>
+
+" Press the space bar to type the : character in command mode.
+" nnoremap <space> :
+
+" Center the cursor vertically when moving to the next word during a search.
+nnoremap n nzz
+nnoremap N Nzz
+
+" Yank from cursor to the end of line.
+nnoremap Y y$
+
+" Mappings to toggle folds
+nnoremap <F9> za
+" DISABLED : NO USE RIGHT NOW
+" Map the F5 key to run a Python script inside Vim.
+" I map F5 to a chain of commands here.
+" :w saves the file.
+" <CR> (carriage return) is like pressing the enter key.
+" !clear runs the external clear screen command.
+" !python3 % executes the current file with Python.
+" nnoremap <f5> :w <CR>:!clear <CR>:!python3 % <CR>
+
+" You can split the window in Vim by typing :split or :vsplit.
+" Navigate the split view easier by pressing CTRL+j, CTRL+k, CTRL+h, CTRL+l or CTRL+UP, CTRL+DOWN, CTRL+LEFT, CTRL+RIGHT.
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+nnoremap <c-up> <c-w>k
+nnoremap <c-down> <c-w>j
+nnoremap <c-left> <c-w>h
+nnoremap <c-right> <c-w>l
+
+" Resize split windows using arrow keys by pressing
+" CTRL+SHIFT+UP, CTRL+SHIFT+DOWN, CTRL+SHIFT+LEFT, or CTRL+SHIFT+RIGHT.
+noremap <c-S-up> <c-w>+
+noremap <c-S-down> <c-w>-
+noremap <c-S-left> <c-w><
+noremap <c-S-right> <c-w>>
+
+" NERDTree specific mappings.
+" Map the F3 key to toggle NERDTree open and close.
+nnoremap <F3> :NERDTreeToggle<CR>
+nnoremap <c-n> :NERDTreeToggle<CR>
+
+" Have nerdtree ignore certain files and directories.
+let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
+
+" }}}
+
+
+" VIMSCRIPT -------------------------------------------------------------- {{{
+
+" This will enable code folding.
+" Use the marker method of folding.
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+" If Vim version is equal to or greater than 7.3 enable undofile.
+" This allows you to undo changes to a file even after saving it.
+if version >= 703
+  set undodir=~/.vim/backup
+  set undofile
+  set undoreload=10000
+endif
+
+" }}}
+
+
+" BUFFER MANAGEMENT ------------------------------------------------------ {{{
+  set hidden " Allow buffers to be hidden if you've modified a buffer
+
+  " Move to the next buffer
+  nmap <leader>l :bnext<CR>
+  
+  " Move to the previous buffer
+  nmap <leader>h :bprevious<CR>
+  
+  " Close the current buffer and move to the previous one
+  " This replicates the idea of closing a tab
+  nmap <leader>q :bp <BAR> bd #<CR>
+  
+  " Show all open buffers and their status
+  nmap <leader>bl :ls<CR>
+  
+
+" }}}
+

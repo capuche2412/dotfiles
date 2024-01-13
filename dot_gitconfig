@@ -1,0 +1,26 @@
+[user]
+	name = Arthur Le Roux
+	email = arthurleroux@protonmail.com
+
+[alias]
+    a = add
+    b = branch
+    bl = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+    cm = commit -v
+    cma = commit -v --amend
+    co = checkout
+    cob = checkout -b
+    del = branch -D
+    f = fetch
+    fixup = commit -v --fixup
+    lg = log --oneline -n 5
+    p = push
+    pf = push -f
+    pl = pull
+    rb = rebase
+    rbi = rebase -i
+    s = status
+[core]
+	editor = vim
+[rebase]
+  autosquash = true

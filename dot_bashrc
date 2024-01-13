@@ -106,6 +106,10 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_local
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -126,18 +130,15 @@ fi
 #direnv hook
 eval "$(direnv hook bash)"
 
-#mayo
-. /home/aleroux/Documents/mayo/mayo-complete.sh
-
 #kubectl
 alias k=kubectl
 complete -o default -F __start_kubectl k
 
+#arkade
+export PATH=$PATH:$HOME/.arkade/bin/
+
 #krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-#node
-export PATH="/home/aleroux/.node/node-v20.9.0-linux-x64/bin:$PATH"
 
 #mcfly
 eval "$(mcfly init bash)"
