@@ -44,4 +44,4 @@ sudo ./scripts/autocomplete.sh
 echo "Running apt.sh"
 sudo ./scripts/apt.sh
 echo "Running other.sh"
-sudo ./scripts/apt.sh
+./scripts/other.sh
