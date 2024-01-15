@@ -106,7 +106,7 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -f ~/.bash_aliases ]; then
+if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
 
@@ -133,6 +133,9 @@ eval "$(direnv hook bash)"
 #kubectl
 alias k=kubectl
 complete -o default -F __start_kubectl k
+
+alias ktx=kubectx
+alias kns=kubens
 
 #arkade
 export PATH=$PATH:$HOME/.arkade/bin/
